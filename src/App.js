@@ -2,6 +2,7 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import {connect} from 'react-redux';
 import {createStructuredSelector} from "reselect";
+import mojs from "@mojs/core";
 
 import './App.css';
 
@@ -40,6 +41,27 @@ class App extends React.Component {
         setCurrentUser(userAuth)
       }
     })
+
+    const burst = new mojs.Burst({
+      left: 0, top: 0,
+      radius:   { 0: 50 },
+      count:    10,
+      children: {
+        shape:      'polygon',
+        points:     3,
+        fill:       { 'rgb(40, 222, 33)' : 'rgb(29, 44, 219)' },
+        angle:      { 360: 0 },
+        duration:   1500,
+        delay:      'stagger( rand(0, 200) )'
+      }
+    });
+    
+    document.addEventListener( 'click', function (e) {
+      burst
+        .tune({ x: e.pageX, y: e.pageY })
+        .replay();
+    } );
+
   }
 
   componentWillUnmount() {
